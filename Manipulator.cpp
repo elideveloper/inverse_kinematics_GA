@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Manipulator::Manipulator(double l1, double l2, double l3, double h) : l1(l1), l2(l2), l3(l3), h(h)
+Manipulator::Manipulator(double l1, double l2, double l3) : l1(l1), l2(l2), l3(l3)
 {
 }
 

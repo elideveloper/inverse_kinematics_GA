@@ -10,8 +10,8 @@ int main() {
 	srand(time(0));
 
 	int numIter = 10000;
-	Manipulator manip(10.0, 5.0, 3.0, 20.0);
-	Point destPoint(7.5, 7.5, 10.0);
+	Manipulator manip(10.0, 5.0, 3.0);
+	Point destPoint(6.6, 6.6, 10.0);
 	Generation gen(10);
 	const double mutateProb = 0.1;
 	const int numLeaveBest = 2;
