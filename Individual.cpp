@@ -4,10 +4,10 @@
 
 Individual::Individual()
 {
-	this->teta1 = (rand() % ((int)(2 * PI * 1000) + 1) - PI * 1000) / 1000.0;
-	this->teta2 = (rand() % ((int)(2 * PI * 1000) + 1) - PI * 1000) / 1000.0;
-	this->teta3 = (rand() % ((int)(2 * PI * 1000) + 1) - PI * 1000) / 1000.0;
-	this->alpha = (rand() % ((int)(2 * PI * 1000) + 1) - PI * 1000) / 1000.0;
+	this->teta1 = (rand() % ((int)(PI * 1000) + 1) - PI / 2.0 * 1000) / 1000.0;
+	this->teta2 = (rand() % ((int)(PI * 1000) + 1) - PI / 2.0 * 1000) / 1000.0;
+	this->teta3 = (rand() % ((int)(PI * 1000) + 1) - PI / 2.0 * 1000) / 1000.0;
+	this->alpha = (rand() % ((int)(PI * 1000) + 1) - PI / 2.0 * 1000) / 1000.0;
 }
 
 Individual::Individual(const Individual& ind)

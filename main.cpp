@@ -9,6 +9,7 @@ double radToDegree(double angle) {
 	return angle * 180.0 / PI;
 }
 
+
 int main() {
 
 	srand(time(0));
@@ -19,7 +20,7 @@ int main() {
 	double l2 = 10.0;
 	double l3 = 5.0;
 	Manipulator manip(l1, l2, l3, h);			// initial state is set automatically
-	Point destPoint(27.0, 19.0, 1.0);
+	Point destPoint(37.0, -23.0, 8.0);
 	Generation gen(10);
 	const double mutateProb = 0.1;
 	const int numLeaveBest = 2;
