@@ -17,7 +17,8 @@ double Manipulator::computeRelativeL3Z(const Individual & ind) const
 	return computeRelativeL2Z(ind) + this->l3 * sin(ind.teta1 + ind.teta2 + ind.teta3);
 }
 
-Manipulator::Manipulator(double l1, double l2, double l3, double h) : l1(l1), l2(l2), l3(l3), h(h), alpha(0.0), teta1(PI/2), teta2(-PI*3.0/4.0), teta3(-PI/4)
+Manipulator::Manipulator(double l1, double l2, double l3, double h, double alpha, double teta1, double teta2, double teta3) 
+	: l1(l1), l2(l2), l3(l3), h(h), alpha(alpha), teta1(teta1), teta2(teta2), teta3(teta3)
 {
 }
 
@@ -45,12 +46,12 @@ double Manipulator::findError(const Individual& ind, Point point) const
 	return point.distanceTo(this->computeX(ind), this->computeY(ind), this->computeZ(ind));
 }
 
-Individual Manipulator::getRotationAngles(const Individual& ind) const
+Individual Manipulator::getServoAngles(const Individual& ind) const
 {
 	Individual rotInd;
-	rotInd.alpha = ind.alpha - this->alpha;
-	rotInd.teta1 = ind.teta1 - this->teta1;
-	rotInd.teta2 = ind.teta2 - this->teta2;
-	rotInd.teta3 = ind.teta3 - this->teta3;
+	rotInd.alpha = this->alpha + ind.alpha;
+	rotInd.teta1 = this->teta1 + ind.teta1;
+	rotInd.teta2 = this->teta2 + ind.teta2;
+	rotInd.teta3 = this->teta3 + ind.teta3;
 	return rotInd;
 }

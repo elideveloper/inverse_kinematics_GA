@@ -10,17 +10,22 @@ double radToDegree(double angle) {
 }
 
 
+// consider claw 
+// resolve mutation problem
+// insert algorithm inside Maipulator and set range parameters
+// think about assymetric ranges
+
 int main() {
 
 	srand(time(0));
 
 	int numIter = 10000;
-	double h = 15.0;
+	double h = 20.0;
 	double l1 = 30.0;
-	double l2 = 10.0;
-	double l3 = 5.0;
-	Manipulator manip(l1, l2, l3, h);			// initial state is set automatically
-	Point destPoint(37.0, -23.0, 8.0);
+	double l2 = 15.0;
+	double l3 = 12.0;
+	Manipulator manip(l1, l2, l3, h, PIdiv2, PIdiv2, PIdiv2, PIdiv2);			// initial state is set automatically
+	Point destPoint(1.0, 1.0, 1.0);
 	Generation gen(10);
 	const double mutateProb = 0.1;
 	const int numLeaveBest = 2;
@@ -40,7 +45,7 @@ int main() {
 		manip.computeX(*gen.getBestInd()), 
 		manip.computeY(*gen.getBestInd()), 
 		manip.computeZ(*gen.getBestInd()));
-	Individual rotInd = manip.getRotationAngles(*gen.getBestInd());
+	Individual rotInd = manip.getServoAngles(*gen.getBestInd());
 	printf("\n Rotate on: %.2f; Teta1: %.2f; Teta2: %.2f; Teta3: %.2f\n",
 		radToDegree(rotInd.alpha), radToDegree(rotInd.teta1),
 		radToDegree(rotInd.teta2), radToDegree(rotInd.teta3));

@@ -6,7 +6,7 @@ Generation::Generation(int numInds) : numInds(numInds)
 {
 	this->inds = new Individual*[numInds];
 	for (int i = 0; i < numInds; i++) {
-		this->inds[i] = new Individual();
+		this->inds[i] = new Individual(PIdiv2, PIdiv2, PIdiv2, PIdiv2);
 	}
 }
 
@@ -48,7 +48,7 @@ void Generation::turnToNext(const Manipulator& manip, const Point& destPoint, in
 	}
 	for (int i = numLeaveBest + numCrossover; i < this->numInds; i++) {
 		delete this->inds[i];
-		this->inds[i] = new Individual();
+		this->inds[i] = new Individual(PIdiv2, PIdiv2, PIdiv2, PIdiv2);
 	}
 }
 

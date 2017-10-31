@@ -8,7 +8,7 @@ class Manipulator {
 	double l2;
 	double l3;
 	double h;
-	double alpha;	// initial angles
+	double alpha;	// starting angles of servos
 	double teta1;
 	double teta2;
 	double teta3;
@@ -16,10 +16,10 @@ class Manipulator {
 	double computeRelativeL2Z(const Individual & ind) const;
 	double computeRelativeL3Z(const Individual & ind) const;
 public:
-	Manipulator(double l1, double l2, double l3, double h);
+	Manipulator(double l1, double l2, double l3, double h, double alpha, double teta1, double teta2, double teta3);
 	double computeX(const Individual& ind) const;
 	double computeY(const Individual & ind) const;
 	double computeZ(const Individual & ind) const;
 	double findError(const Individual& ind, Point point) const;
-	Individual getRotationAngles(const Individual& ind) const;
+	Individual getServoAngles(const Individual& ind) const;
 };
