@@ -14,6 +14,12 @@ double radToDegree(double angle) {
 // resolve mutation problem
 // insert algorithm inside Maipulator and set range parameters
 // think about assymetric ranges
+// terminate if acceptable error is reached
+// прописать реальные диапазоны каждой сервы 
+	// чтобы возвращать сразу необходимое значение 
+	// от 0 до 180 с пом нормирующей функции
+// позволить в модели манипулятора задавать все параметры, типа длины джоинта,
+	// чтобы все это учитывалось и считалось правильно потом
 
 int main() {
 
