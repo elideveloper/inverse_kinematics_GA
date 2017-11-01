@@ -20,18 +20,19 @@ double radToDegree(double angle) {
 	// от 0 до 180 с пом нормирующей функции
 // позволить в модели манипулятора задавать все параметры, типа длины джоинта,
 	// чтобы все это учитывалось и считалось правильно потом
+// удалять индивидов с пересечением локтей.
 
 int main() {
 
 	srand(time(0));
 
 	int numIter = 10000;
-	double h = 20.0;
-	double l1 = 30.0;
+	double h = 25.0;
+	double l1 = 20.0;
 	double l2 = 15.0;
 	double l3 = 12.0;
 	Manipulator manip(l1, l2, l3, h, PIdiv2, PIdiv2, PIdiv2, PIdiv2);			// initial state is set automatically
-	Point destPoint(1.0, 1.0, 1.0);
+	Point destPoint(0.0, 5.0, 24.0);
 	Generation gen(10);
 	const double mutateProb = 0.1;
 	const int numLeaveBest = 2;
