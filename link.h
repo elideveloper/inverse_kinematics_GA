@@ -11,6 +11,8 @@ public:
 	Link & operator=(const Link & link);
 	Point computeB();
 	Point computeB(const Link & prevLink);
+	int getLength() const;
+	double getTurn() const;
 	void setA(Point a);
 	void setAngles(Angles angles);
 	Angles getAngles() const;

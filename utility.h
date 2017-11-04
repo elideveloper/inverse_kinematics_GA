@@ -11,6 +11,7 @@ const double PIdiv4 = 0.7854;
 double radianToDegree(double angle);
 double degreeToRadian(double angle);
 
-int random(int max);// DELETE
+int random(int max);
+int random(int min, int max);
 
 #endif

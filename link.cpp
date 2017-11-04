@@ -51,6 +51,16 @@ Point Link::computeB(const Link & prevLink)
 	return this->_b;
 }
 
+int Link::getLength() const
+{
+	return this->_length;
+}
+
+double Link::getTurn() const
+{
+	return this->_joint->getAngle();
+}
+
 void Link::setA(Point a)
 {
 	this->_a = a;

@@ -5,15 +5,16 @@
 
 class Manipulator {
 public:
-	Manipulator(Link* links, int numLinks);
+	Manipulator(Link* links, int numLinks, Angles startingPos);
 	Point computePosition();
 	void reachPosition(Point dest);
-	void setStartingPosition(Angles angles);
+	double* getJointAngles() const;
 private:
 	int _numLinks;
 	Link* _links;
 	Link** createGeneration();
-	void sortGeneration(Link** generation);
+	Angles _startingPosition;									// starting angles of first link
+	void sortGeneration(Link** generation, Point dest);
 	void takeBest(Link** generation, Point dest);
 	void cross(Link* dad, Link* mom);
 	void tryMutate(Link* individual, double prob);
