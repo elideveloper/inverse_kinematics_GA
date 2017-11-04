@@ -1,57 +1,106 @@
-#include "Manipulator.h"
+#include "manipulator.h"
 
-#include <cmath>
-
-double Manipulator::computeRelativeL1Z(const Individual & ind) const
-{
-	return this->l1 * sin(ind.teta1);
-}
-
-double Manipulator::computeRelativeL2Z(const Individual & ind) const
-{
-	return computeRelativeL1Z(ind) + this->l2 * sin(ind.teta1 + ind.teta2);
-}
-
-double Manipulator::computeRelativeL3Z(const Individual & ind) const
-{
-	return computeRelativeL2Z(ind) + this->l3 * sin(ind.teta1 + ind.teta2 + ind.teta3);
-}
-
-Manipulator::Manipulator(double l1, double l2, double l3, double h, double alpha, double teta1, double teta2, double teta3) 
-	: l1(l1), l2(l2), l3(l3), h(h), alpha(alpha), teta1(teta1), teta2(teta2), teta3(teta3)
+#include "ga_params.h"
+#include "utility.h" // DELETE
+Manipulator::Manipulator(Link* links, int numLinks) : _links(links), _numLinks(numLinks)
 {
 }
 
-double Manipulator::computeX(const Individual& ind) const
+Point Manipulator::computePosition()
 {
-	return cos(ind.alpha) * (this->l1 * cos(ind.teta1) + this->l2 * cos(ind.teta1 + ind.teta2) + this->l3 * cos(ind.teta1 + ind.teta2 + ind.teta3));
-}
-
-double Manipulator::computeY(const Individual& ind) const
-{
-	return sin(ind.alpha) * (this->l1 * cos(ind.teta1) + this->l2 * cos(ind.teta1 + ind.teta2) + this->l3 * cos(ind.teta1 + ind.teta2 + ind.teta3));
-}
-
-double Manipulator::computeZ(const Individual& ind) const
-{
-	return this->h + this->computeRelativeL3Z(ind);
-}
-
-double Manipulator::findError(const Individual& ind, Point point) const
-{
-	double z = this->computeZ(ind);
-	if (z < 0.0 || h + this->computeRelativeL2Z(ind) < 0.0 || h + this->computeRelativeL1Z(ind) < 0.0) {
-		return this->l1 + this->l2 + this->l3;													// return big error
+	Point p = this->_links[0].computeB();
+	for (register int i = 1; i < this->_numLinks; i++) {
+		this->_links[i].setA(p);
+		this->_links[i].setAngles(this->_links[i - 1].getAngles());
+		p = this->_links[i].computeB(this->_links[i - 1]);
 	}
-	return point.distanceTo(this->computeX(ind), this->computeY(ind), this->computeZ(ind));
+	return p;
 }
 
-Individual Manipulator::getServoAngles(const Individual& ind) const
+void Manipulator::reachPosition(Point dest)
 {
-	Individual rotInd;
-	rotInd.alpha = this->alpha + ind.alpha;
-	rotInd.teta1 = this->teta1 + ind.teta1;
-	rotInd.teta2 = this->teta2 + ind.teta2;
-	rotInd.teta3 = this->teta3 + ind.teta3;
-	return rotInd;
+	Link** gen = this->createGeneration();
+	for (register int n = 0; n < maxIterations; n++) {
+		this->sortGeneration(gen);
+		for (register int i = 0; i < numCrossover; i += 2) {
+			this->cross(gen[numLeaveBest + i], gen[numLeaveBest + i + 1]);
+		}
+		for (register int i = numLeaveBest; i < numLeaveBest + numCrossover; i++) {
+			this->tryMutate(gen[i], mutateProb);
+		}
+		for (register int i = numLeaveBest + numCrossover; i < numIndividuals; i++) {
+			for (register int j = 0; j < this->_numLinks; j++) {
+				gen[i][j] = Link(this->_links[j]);
+				gen[i][j].randomizeAngle();
+			}
+		}
+	}
+
+	this->takeBest(gen, dest);
+
+	// release memory
+	for (register int i = 0; i < numIndividuals; i++) {
+		delete[] gen[i];
+	}
+	delete[] gen;
+}
+
+void Manipulator::setStartingPosition(Angles angles)
+{
+	this->_links[0].setAngles(angles);
+}
+
+Link** Manipulator::createGeneration()
+{
+	Link** generation = new Link*[numIndividuals];
+	for (register int i = 0; i < numIndividuals; i++) {
+		generation[i] = new Link[this->_numLinks];
+		for (register int j = 0; j < this->_numLinks; j++) {
+			generation[i][j] = Link(this->_links[j]);
+			if (i != 0) generation[i][j].randomizeAngle();
+		}
+	}
+	return generation;
+}
+
+void Manipulator::sortGeneration(Link** generation)
+{
+
+}
+
+void Manipulator::takeBest(Link** generation, Point dest)
+{
+	Point pos;
+	double error = 0.0;
+	double minError = 9999.0;
+	int bestIndIndex = 0;
+	Link* currLinks = this->_links;
+
+	for (register int i = 0; i < numIndividuals; i++) {
+		this->_links = generation[i];
+		pos = this->computePosition();
+		error = pos.distanceTo(dest);
+		if (error < minError) {
+			minError = error;
+			bestIndIndex = i;
+		}
+	}
+
+	// take the best individual
+	this->_links = currLinks;
+	for (register int j = 0; j < this->_numLinks; j++) {
+		this->_links[j] = generation[bestIndIndex][j];
+	}
+}
+
+void Manipulator::cross(Link* dad, Link* mom)
+{
+	for (register int j = 0; j < this->_numLinks; j += 2) {
+		dad[j].swapJoints(mom[j]);
+	}
+}
+
+void Manipulator::tryMutate(Link* individual, double prob)
+{
+	individual[random(this->_numLinks)].randomizeAngle();
 }

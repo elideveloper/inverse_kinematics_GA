@@ -1,62 +1,51 @@
-#include <iostream>
-#include <ctime>
+#include<ctime>
+#include<iostream>
 
-#include "Generation.h"
-
-using namespace std;
-
-double radToDegree(double angle) {
-	return angle * 180.0 / PI;
-}
+#include "manipulator.h"
+#include "utility.h"
 
 
 // consider claw 
-// resolve mutation problem
-// insert algorithm inside Maipulator and set range parameters
-// think about assymetric ranges
+// set right values for randoms in given range (considering assymetric ranges)
 // terminate if acceptable error is reached
-// прописать реальные диапазоны каждой сервы 
-	// чтобы возвращать сразу необходимое значение 
-	// от 0 до 180 с пом нормирующей функции
-// позволить в модели манипулятора задавать все параметры, типа длины джоинта,
-	// чтобы все это учитывалось и считалось правильно потом
-// удалять индивидов с пересечением локтей.
+// normalize() function for returning right values for specific servo (270 degree for example)
+// introduce a linear joint (change length of link)
+// implement revolution
+// remove individuals which body intersects obstruction plane
+
 
 int main() {
-
 	srand(time(0));
 
-	int numIter = 10000;
-	double h = 25.0;
-	double l1 = 20.0;
-	double l2 = 15.0;
-	double l3 = 12.0;
-	Manipulator manip(l1, l2, l3, h, PIdiv2, PIdiv2, PIdiv2, PIdiv2);			// initial state is set automatically
-	Point destPoint(0.0, 5.0, 24.0);
-	Generation gen(10);
-	const double mutateProb = 0.1;
-	const int numLeaveBest = 2;
-	const int numCrossover = 4;
+	clock_t tStart = clock();
 
-	for (int i = 0; i < numIter; i++) {
-		gen.turnToNext(manip, destPoint, numLeaveBest, numCrossover, mutateProb);
-		//printf("\nCurr err: %.2f", manip.findError(*gen.getBestInd(), destPoint));
-		//printf("\nTeta1: %.2f; Teta2: %.2f; Teta3: %.2f\n", gen.getBestInd()->teta1, gen.getBestInd()->teta2, gen.getBestInd()->teta3);
-	}
+	int numLinks = 3;
+	Point pos;
+	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
 
-	printf("\Final err: %.2f", manip.findError(*gen.getBestInd(), destPoint));
-	printf("\n Alpha: %.2f; Teta1: %.2f; Teta2: %.2f; Teta3: %.2f\n", 
-		radToDegree(gen.getBestInd()->alpha), radToDegree(gen.getBestInd()->teta1),
-		radToDegree(gen.getBestInd()->teta2), radToDegree(gen.getBestInd()->teta3));
-	printf("\nx: %.2f; y: %.2f; z: %.2f\n",
-		manip.computeX(*gen.getBestInd()), 
-		manip.computeY(*gen.getBestInd()), 
-		manip.computeZ(*gen.getBestInd()));
-	Individual rotInd = manip.getServoAngles(*gen.getBestInd());
-	printf("\n Rotate on: %.2f; Teta1: %.2f; Teta2: %.2f; Teta3: %.2f\n",
-		radToDegree(rotInd.alpha), radToDegree(rotInd.teta1),
-		radToDegree(rotInd.teta2), radToDegree(rotInd.teta3));
-	
+	Range r(PIdiv2, -PIdiv2);
+	Link* links = new Link[numLinks];
+	Angles startingPos(PIdiv2);
+
+	links[0] = Link(10, new TwistingJoint(r, PIdiv4), startingPos);
+	links[1] = Link(10, new RotationJoint(r, 0));
+	links[2] = Link(10, new RotationJoint(r, 0));
+	Manipulator manip(links, numLinks);
+
+	pos = manip.computePosition();
+	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
+
+	manip.setStartingPosition(startingPos);
+	manip.reachPosition(Point());
+	pos = manip.computePosition();
+	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
+
+
+
+	printf("Time taken: %.8fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);
+
+	printf("Size of one Link: %d", sizeof(Link(10, new TwistingJoint(r, PIdiv4), startingPos)));
+
 	system("pause");
 	return 0;
 }

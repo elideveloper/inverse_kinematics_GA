@@ -1,25 +1,22 @@
-#pragma once
+#ifndef MANIPULATOR_H
+#define MANIPULATOR_H
 
-#include "Individual.h"
-#include "Point.h"
+#include "link.h"
 
 class Manipulator {
-	double l1;
-	double l2;
-	double l3;
-	double h;
-	double alpha;	// starting angles of servos
-	double teta1;
-	double teta2;
-	double teta3;
-	double computeRelativeL1Z(const Individual & ind) const;
-	double computeRelativeL2Z(const Individual & ind) const;
-	double computeRelativeL3Z(const Individual & ind) const;
 public:
-	Manipulator(double l1, double l2, double l3, double h, double alpha, double teta1, double teta2, double teta3);
-	double computeX(const Individual& ind) const;
-	double computeY(const Individual & ind) const;
-	double computeZ(const Individual & ind) const;
-	double findError(const Individual& ind, Point point) const;
-	Individual getServoAngles(const Individual& ind) const;
+	Manipulator(Link* links, int numLinks);
+	Point computePosition();
+	void reachPosition(Point dest);
+	void setStartingPosition(Angles angles);
+private:
+	int _numLinks;
+	Link* _links;
+	Link** createGeneration();
+	void sortGeneration(Link** generation);
+	void takeBest(Link** generation, Point dest);
+	void cross(Link* dad, Link* mom);
+	void tryMutate(Link* individual, double prob);
 };
+
+#endif
