@@ -18,6 +18,7 @@ private:
 	void takeBest(Link** generation, Point dest);
 	void cross(Link* dad, Link* mom);
 	void tryMutate(Link* individual, double prob);
+	double computeError(Point dest);
 };
 
 #endif

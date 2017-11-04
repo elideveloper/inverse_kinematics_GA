@@ -10,7 +10,7 @@
 // normalize() function for returning right values for specific servo (270 degree for example)
 // introduce a linear joint (change length of link)
 // implement revolution joint
-// remove individuals which body intersects obstruction plane
+// +remove individuals which body intersects obstacle plane
 
 
 int main() {
@@ -22,10 +22,10 @@ int main() {
 	Point pos;
 	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
 
-	Range r(PI_, -PI_);
+	Range r(PIdiv4 * 3, -PIdiv4 * 3);
 	Link* links = new Link[numLinks];
 	Angles startingPos(PIdiv2);
-	Point destination(400.0, 400.0, 40.0);
+	Point destination(200.0, 300.0, 40.0);
 
 	links[0] = Link(100, new TwistingJoint(r, 0));
 	links[1] = Link(150, new RotationJoint(r, 0));

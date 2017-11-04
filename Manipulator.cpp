@@ -80,8 +80,7 @@ void Manipulator::sortGeneration(Link** generation, Point dest)
 	double error = 0.0;
 	for (register int i = 0; i < numIndividuals; i++) {
 		this->_links = generation[i];
-		pos = this->computePosition();
-		error = pos.distanceTo(dest);
+		error = computeError(dest);
 		int errIndex = (int)error;
 		while (errorsArr[errIndex] != nullptr) errIndex++;
 		errorsArr[errIndex] = generation[i];
@@ -109,8 +108,7 @@ void Manipulator::takeBest(Link** generation, Point dest)
 
 	for (register int i = 0; i < numIndividuals; i++) {
 		this->_links = generation[i];
-		pos = this->computePosition();
-		error = pos.distanceTo(dest);
+		error = computeError(dest);
 		if (error < minError) {
 			minError = error;
 			bestIndIndex = i;
@@ -134,4 +132,20 @@ void Manipulator::cross(Link* dad, Link* mom)
 void Manipulator::tryMutate(Link* individual, double prob)
 {
 	individual[random(this->_numLinks)].randomizeAngle();
+}
+
+// reimplement, introduce obstacles
+double Manipulator::computeError(Point dest)
+{
+	Point pos = this->computePosition();
+	for (register int i = 0; i < this->_numLinks; i++) {
+		if (this->_links[i].isIntersectsHorizPlane(0.0)) {
+			int maxError = 0;
+			for (register int j = 0; j < this->_numLinks; j++) {
+				maxError += this->_links[j].getLength();
+			}
+			return maxError;
+		}
+	}
+	return pos.distanceTo(dest);
 }

@@ -87,3 +87,8 @@ void Link::swapJoints(Link & link)
 	link._joint = this->_joint;
 	this->_joint = tmp;
 }
+
+bool Link::isIntersectsHorizPlane(double z)
+{
+	return ((z - this->_a.z) * (z - this->_b.z) < 0.0);
+}

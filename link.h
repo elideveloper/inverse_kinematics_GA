@@ -18,6 +18,7 @@ public:
 	Angles getAngles() const;
 	void randomizeAngle();
 	void swapJoints(Link & link);
+	bool isIntersectsHorizPlane(double z);
 private:
 	Point _a;
 	Point _b;
