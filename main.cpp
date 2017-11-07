@@ -25,7 +25,7 @@ int main() {
 	Range r(PIdiv4 * 3, -PIdiv4 * 3);
 	Link* links = new Link[numLinks];
 	Angles startingPos(PIdiv2);
-	Point destination(200.0, 300.0, 40.0);
+	Point destination(100.0, 100.0, 10.0);
 
 	links[0] = Link(100, new TwistingJoint(r, 0));
 	links[1] = Link(150, new RotationJoint(r, 0));
