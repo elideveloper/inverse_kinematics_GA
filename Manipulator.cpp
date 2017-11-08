@@ -47,9 +47,9 @@ void Manipulator::reachPosition(Point dest)
 	delete[] gen;
 }
 
-double * Manipulator::getJointAngles() const
+int * Manipulator::getJointAngles() const
 {
-	double* angles = new double[this->_numLinks];
+	int* angles = new int[this->_numLinks];
 	for (int i = 0; i < this->_numLinks; i++) angles[i] = this->_links[i].getTurn();
 	return angles;
 }
@@ -77,13 +77,12 @@ void Manipulator::sortGeneration(Link** generation, Point dest)
 	Link* currLinks = this->_links;
 	Link** errorsArr = new Link*[maxError]();
 	Point pos;
-	double error = 0.0;
+	int error = 0;
 	for (register int i = 0; i < numIndividuals; i++) {
 		this->_links = generation[i];
 		error = computeError(dest);
-		int errIndex = (int)error;
-		while (errorsArr[errIndex] != nullptr) errIndex++;
-		errorsArr[errIndex] = generation[i];
+		while (errorsArr[error] != nullptr) error++;
+		errorsArr[error] = generation[i];
 	}
 
 	int j = 0;
@@ -101,8 +100,8 @@ void Manipulator::sortGeneration(Link** generation, Point dest)
 void Manipulator::takeBest(Link** generation, Point dest)
 {
 	Point pos;
-	double error = 0.0;
-	double minError = 9999.0;
+	int error = 0;
+	int minError = 9999;
 	int bestIndIndex = 0;
 	Link* currLinks = this->_links;
 
@@ -129,17 +128,18 @@ void Manipulator::cross(Link* dad, Link* mom)
 	}
 }
 
-void Manipulator::tryMutate(Link* individual, double prob)
+void Manipulator::tryMutate(Link* individual, int prob)
 {
-	individual[random(this->_numLinks)].randomizeAngle();
+	int mutNo = random(this->_numLinks * 100 / prob);
+	if (mutNo < this->_numLinks) individual[mutNo].randomizeAngle();
 }
 
 // reimplement, introduce obstacles
-double Manipulator::computeError(Point dest)
+int Manipulator::computeError(Point dest)
 {
 	Point pos = this->computePosition();
 	for (register int i = 0; i < this->_numLinks; i++) {
-		if (this->_links[i].isIntersectsHorizPlane(0.0)) {
+		if (this->_links[i].isIntersectsHorizPlane(0)) {
 			int maxError = 0;
 			for (register int j = 0; j < this->_numLinks; j++) {
 				maxError += this->_links[j].getLength();

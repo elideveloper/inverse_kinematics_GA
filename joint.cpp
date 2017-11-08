@@ -8,11 +8,11 @@ Joint::~Joint()
 {
 }
 
-Joint::Joint(Range angleRange, double angle) : _angleRange(angleRange), _angle(angle)
+Joint::Joint(Range angleRange, int angle) : _angleRange(angleRange), _angle(angle)
 {
 }
 
-double Joint::getAngle() const
+int Joint::getAngle() const
 {
 	return this->_angle;
 }
@@ -30,7 +30,7 @@ RotationJoint::~RotationJoint()
 {
 }
 
-RotationJoint::RotationJoint(Range angleRange, double angle) : Joint(angleRange, angle)
+RotationJoint::RotationJoint(Range angleRange, int angle) : Joint(angleRange, angle)
 {
 }
 
@@ -58,7 +58,7 @@ TwistingJoint::~TwistingJoint()
 {
 }
 
-TwistingJoint::TwistingJoint(Range angleRange, double angle) : Joint(angleRange, angle)
+TwistingJoint::TwistingJoint(Range angleRange, int angle) : Joint(angleRange, angle)
 {
 }
 
@@ -86,7 +86,7 @@ RevolutionJoint::~RevolutionJoint()
 {
 }
 
-RevolutionJoint::RevolutionJoint(Range angleRange, double angle) : Joint(angleRange, angle)
+RevolutionJoint::RevolutionJoint(Range angleRange, int angle) : Joint(angleRange, angle)
 {
 }
 

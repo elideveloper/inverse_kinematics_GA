@@ -12,13 +12,13 @@ public:
 	Point computeB();
 	Point computeB(const Link & prevLink);
 	int getLength() const;
-	double getTurn() const;
+	int getTurn() const;
 	void setA(Point a);
 	void setAngles(Angles angles);
 	Angles getAngles() const;
 	void randomizeAngle();
 	void swapJoints(Link & link);
-	bool isIntersectsHorizPlane(double z);
+	bool isIntersectsHorizPlane(int z);
 private:
 	Point _a;
 	Point _b;

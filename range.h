@@ -4,12 +4,12 @@
 class Range {
 public:
 	Range();
-	Range(double max, double min);
+	Range(int max, int min);
 	Range(const Range & range);
-	double getRandom();
+	int getRandom();
 private:
-	double _min;
-	double _max;
+	int _min;
+	int _max;
 };
 
 #endif

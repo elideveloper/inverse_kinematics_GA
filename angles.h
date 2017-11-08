@@ -2,11 +2,11 @@
 #define ANGLES_H
 
 struct Angles {
-	double rotationAngle;
-	double twistingAngle;
-	double revolutionAngle;
+	int rotationAngle;
+	int twistingAngle;
+	int revolutionAngle;
 	//Angles();
-	Angles(double rotationAngle = 0.0, double twistingAngle = 0.0, double revolutionAngle = 0.0);
+	Angles(int rotationAngle = 0, int twistingAngle = 0, int revolutionAngle = 0);
 	Angles(const Angles & angles);
 	Angles & operator= (const Angles & angles);
 };

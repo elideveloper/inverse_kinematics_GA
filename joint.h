@@ -9,14 +9,14 @@ class Joint {
 public:
 	Joint();
 	virtual ~Joint();
-	Joint(Range angleRange, double angle = 0.0);
+	Joint(Range angleRange, int angle = 0.0);
 	virtual Joint* clone() = 0;
 	virtual void changeAngles(Angles & angles) = 0; // computeResultingPoint
-	double getAngle() const;
+	int getAngle() const;
 	void randomizeAngle();
 protected:
 	Range _angleRange;
-	double _angle;
+	int _angle;
 };
 
 // rotation in vertical plane
@@ -24,7 +24,7 @@ class RotationJoint : public Joint {
 public:
 	RotationJoint();
 	virtual ~RotationJoint();
-	RotationJoint(Range angleRange, double angle = 0.0);
+	RotationJoint(Range angleRange, int angle = 0.0);
 	RotationJoint(const RotationJoint & joint);
 	virtual Joint* clone();
 	virtual void changeAngles(Angles & angles);
@@ -35,7 +35,7 @@ class TwistingJoint : public Joint {
 public:
 	TwistingJoint();
 	virtual ~TwistingJoint();
-	TwistingJoint(Range angleRange, double angle = 0.0);
+	TwistingJoint(Range angleRange, int angle = 0.0);
 	TwistingJoint(const TwistingJoint & joint);
 	virtual Joint* clone();
 	virtual void changeAngles(Angles & angles);
@@ -46,7 +46,7 @@ class RevolutionJoint : public Joint {
 public:
 	RevolutionJoint();
 	virtual ~RevolutionJoint();
-	RevolutionJoint(Range angleRange, double angle = 0.0);
+	RevolutionJoint(Range angleRange, int angle = 0.0);
 	RevolutionJoint(const RevolutionJoint & joint);
 	virtual Joint* clone();
 	virtual void changeAngles(Angles & angles);

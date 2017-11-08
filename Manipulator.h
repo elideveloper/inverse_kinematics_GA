@@ -8,17 +8,17 @@ public:
 	Manipulator(Link* links, int numLinks, Angles startingPos);
 	Point computePosition();
 	void reachPosition(Point dest);
-	double* getJointAngles() const;
+	int* getJointAngles() const;
 private:
 	int _numLinks;
 	Link* _links;
-	Link** createGeneration();
 	Angles _startingPosition;									// starting angles of first link
+	Link** createGeneration();
 	void sortGeneration(Link** generation, Point dest);
 	void takeBest(Link** generation, Point dest);
 	void cross(Link* dad, Link* mom);
-	void tryMutate(Link* individual, double prob);
-	double computeError(Point dest);
+	void tryMutate(Link* individual, int prob);
+	int computeError(Point dest);
 };
 
 #endif

@@ -20,12 +20,12 @@ int main() {
 
 	int numLinks = 5;
 	Point pos;
-	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
+	printf("\nPosition: x=%d, y=%d, z=%d", pos.x, pos.y, pos.z);
 
 	Range r(PIdiv4 * 3, -PIdiv4 * 3);
 	Link* links = new Link[numLinks];
 	Angles startingPos(PIdiv2);
-	Point destination(100.0, 100.0, 10.0);
+	Point destination(200, 400, 10);
 
 	links[0] = Link(100, new TwistingJoint(r, 0));
 	links[1] = Link(150, new RotationJoint(r, 0));
@@ -34,21 +34,21 @@ int main() {
 	links[4] = Link(100, new RotationJoint(r, 0));
 	Manipulator manip(links, numLinks, startingPos);
 	pos = manip.computePosition();
-	printf("\nError: %.2f", pos.distanceTo(destination));
-	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
+	printf("\nError: %d", pos.distanceTo(destination));
+	printf("\nPosition: x=%d, y=%d, z=%d", pos.x, pos.y, pos.z);
 
 	manip.reachPosition(destination);
 	pos = manip.computePosition();
-	printf("\nError: %.2f", pos.distanceTo(destination));
-	printf("\nPosition: x=%.2f, y=%.2f, z=%.2f", pos.x, pos.y, pos.z);
+	printf("\nError: %d", pos.distanceTo(destination));
+	printf("\nPosition: x=%d, y=%d, z=%d", pos.x, pos.y, pos.z);
 	for (int i = 0; i < numLinks; i++) {
-		printf("\nTurn: %.2f", radianToDegree(manip.getJointAngles()[i]));
+		printf("\nTurn: %d", manip.getJointAngles()[i]);
 	}
 	printf("\nFor robot analyzer:");
-	printf("\nTurn: %.2f", -radianToDegree(manip.getJointAngles()[0]));
-	printf("\nTurn: %.2f", 90+radianToDegree(manip.getJointAngles()[1]));
+	printf("\nTurn: %d", -manip.getJointAngles()[0]);
+	printf("\nTurn: %d", 90+manip.getJointAngles()[1]);
 	for (int i = 2; i < numLinks; i++) {
-		printf("\nTurn: %.2f", radianToDegree(manip.getJointAngles()[i]));
+		printf("\nTurn: %d", manip.getJointAngles()[i]);
 	}
 
 	printf("\nTime taken: %.8fs\n", (double)(clock() - tStart) / CLOCKS_PER_SEC);	

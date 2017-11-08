@@ -2,12 +2,12 @@
 
 #include <random>
 
-double radianToDegree(double angle) {
-	return angle * 180.0 / PI_;
+int radianToDegree(double angle) {
+	return angle * 180 / 3.14;
 }
 
-double degreeToRadian(double angle) {
-	return angle / 180.0 * PI_;
+double degreeToRadian(int angle) {
+	return angle / 180.0 * 3.14;
 }
 
 int random(int max) {

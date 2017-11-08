@@ -4,7 +4,7 @@
 {
 }*/
 
-Angles::Angles(double rotationAngle, double twistingAngle, double revolutionAngle) 
+Angles::Angles(int rotationAngle, int twistingAngle, int revolutionAngle)
 	: rotationAngle(rotationAngle), twistingAngle(twistingAngle), revolutionAngle(revolutionAngle)
 {
 }

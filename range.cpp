@@ -4,7 +4,7 @@ Range::Range()
 {
 }
 
-Range::Range(double max, double min) : _min(min), _max(max)
+Range::Range(int max, int min) : _min(min), _max(max)
 {
 }
 
@@ -14,7 +14,7 @@ Range::Range(const Range & range)
 	this->_min = range._min;
 }
 
-double Range::getRandom()
+int Range::getRandom()
 {
-	return random(this->_min * 100, this->_max * 100) / 100.0;
+	return random(this->_min, this->_max);
 }

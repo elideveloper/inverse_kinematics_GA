@@ -4,15 +4,14 @@
 class Point {
 public:
 	Point();
-	Point(double x, double y, double z);
+	Point(int x, int y, int z);
 	Point(const Point & point);
 	Point & operator= (const Point & point);
-	double x;
-	double y;
-	double z;
-	double distanceTo(double x, double y, double z) const;
-	double distanceTo(const Point & point) const;
-private:
+	int x;
+	int y;
+	int z;
+	int distanceTo(int x, int y, int z) const;
+	int distanceTo(const Point & point) const;
 };
 
 #endif

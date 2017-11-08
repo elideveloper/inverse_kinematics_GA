@@ -1,6 +1,8 @@
 #include "link.h"
 
+#include "utility.h"
 #include <math.h>
+#include <iostream>
 
 Link::Link() : _joint(nullptr)
 {
@@ -35,9 +37,10 @@ Link & Link::operator=(const Link & link)
 Point Link::computeB()
 {
 	this->_joint->changeAngles(this->_currAngles);
-	this->_b.x = this->_a.x + cos(this->_currAngles.rotationAngle) * this->_length * sin(this->_currAngles.twistingAngle);
-	this->_b.y = this->_a.y + cos(this->_currAngles.rotationAngle) * this->_length * cos(this->_currAngles.twistingAngle);
-	this->_b.z = this->_a.z + sin(this->_currAngles.rotationAngle) * this->_length;
+	this->_b.x = this->_a.x + cos(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length * sin(degreeToRadian(this->_currAngles.twistingAngle));
+	this->_b.y = this->_a.y + cos(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length * cos(degreeToRadian(this->_currAngles.twistingAngle));
+	this->_b.z = this->_a.z + sin(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length;
+	//printf("\n computeB(): x=%d, y=%d, z=%d", this->_b.x, this->_b.y, this->_b.z);
 	return this->_b;
 }
 
@@ -45,9 +48,10 @@ Point Link::computeB(const Link & prevLink)
 {
 	// TODO: take in account revolutions of prev links
 	this->_joint->changeAngles(this->_currAngles);
-	this->_b.x = this->_a.x + cos(this->_currAngles.rotationAngle) * this->_length * sin(this->_currAngles.twistingAngle);
-	this->_b.y = this->_a.y + cos(this->_currAngles.rotationAngle) * this->_length * cos(this->_currAngles.twistingAngle);
-	this->_b.z = this->_a.z + sin(this->_currAngles.rotationAngle) * this->_length;
+	this->_b.x = this->_a.x + cos(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length * sin(degreeToRadian(this->_currAngles.twistingAngle));
+	this->_b.y = this->_a.y + cos(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length * cos(degreeToRadian(this->_currAngles.twistingAngle));
+	this->_b.z = this->_a.z + sin(degreeToRadian(this->_currAngles.rotationAngle)) * this->_length;
+	//printf("\n computeB(prevLink): x=%d, y=%d, z=%d", this->_b.x, this->_b.y, this->_b.z);
 	return this->_b;
 }
 
@@ -56,7 +60,7 @@ int Link::getLength() const
 	return this->_length;
 }
 
-double Link::getTurn() const
+int Link::getTurn() const
 {
 	return this->_joint->getAngle();
 }
@@ -88,7 +92,7 @@ void Link::swapJoints(Link & link)
 	this->_joint = tmp;
 }
 
-bool Link::isIntersectsHorizPlane(double z)
+bool Link::isIntersectsHorizPlane(int z)
 {
-	return ((z - this->_a.z) * (z - this->_b.z) < 0.0);
+	return ((z - this->_a.z) * (z - this->_b.z) < 0);
 }
